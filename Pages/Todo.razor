@@ -1,0 +1,69 @@
+﻿@page "/todo"
+
+<PageTitle>To Do</PageTitle>
+
+<h3>To Do</h3>
+<div class="mw-75"><div class="w-75 p-3" >
+    <div class="p-3 mb-2 bg-light text-dark">
+        <h4>Todo [@todos.Count(todo => !todo.IsDone)]</h4>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+                ID
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Is Done[@todos.Count(todo => todo.IsDone)]
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var todo in todos) {
+            <tr>
+                <td>
+                    @todo.Id
+                </td>
+                <td>
+                    @todo.Title
+                </td>
+                <td>
+                    <input type="checkbox" @bind="todo.IsDone"/>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+
+
+@* <ul>
+    @foreach (var todo in todos)
+    {
+        <li>@todo.Id</li>
+        <li>@todo.Title</li>
+    }
+</ul> *@
+
+    <div class="input-group mb-3">
+        <input class="form-control" placeholder="Something todo" @bind="newTodo"/>
+        <button class="btn btn-warning"  @onclick="AddTodo">Add todo</button>
+    </div>
+</div>
+</div>
+</div>
+@code {
+    private string? newTodo;
+    private int? id=0;
+    private List<TodoItem> todos = new();
+     private void AddTodo()
+    {
+        if (!string.IsNullOrWhiteSpace(newTodo))
+        {
+            todos.Add(new TodoItem { Title = newTodo, Id= id+1 });
+            newTodo = string.Empty;
+            id++;
+        }
+    }
+}
